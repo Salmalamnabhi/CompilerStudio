@@ -7,14 +7,8 @@
   <Color name="Number"     foreground="#F38BA8"/>
   <Color name="Operator"   foreground="#89DCEB"/>
   <Color name="Separator"  foreground="#6C7086"/>
-  <Color name="Comment"    foreground="#45475A" fontStyle="italic"/>
 
   <RuleSet>
-    <!-- Line comment -->
-    <Span color="Comment" singleline="true">
-      <Begin>//</Begin>
-    </Span>
-
     <Keywords color="Keyword">
       <Word>int</Word>
       <Word>if</Word>
@@ -24,7 +18,6 @@
       <Word>do</Word>
       <Word>begin</Word>
       <Word>end</Word>
-      <Word>print</Word>
     </Keywords>
 
     <!-- $identifier$ -->

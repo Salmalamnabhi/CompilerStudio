@@ -78,7 +78,7 @@ public partial class MainWindow : Window
         _allTabs = new List<Button>
         {
             Btn_ParseTree, Btn_Quads, Btn_FIRST, Btn_Grammar, Btn_Lexer,
-            Btn_Summary, Btn_Errors, Btn_Tokens, Btn_Symbols, Btn_AST
+            Btn_Summary, Btn_Errors, Btn_Tokens, Btn_Symbols, Btn_AST, Btn_Output
         };
         SelectTab("Errors");
     }
@@ -107,18 +107,22 @@ public partial class MainWindow : Window
         View_Symbols.Visibility     = tab == "Symbols"   ? Visibility.Visible : Visibility.Collapsed;
         View_Summary.Visibility     = tab == "Summary"   ? Visibility.Visible : Visibility.Collapsed;
         View_ParseLog.Visibility    = tab == "ParseTree" ? Visibility.Visible : Visibility.Collapsed;
+        View_Output.Visibility      = tab == "Output"    ? Visibility.Visible : Visibility.Collapsed;
         View_Placeholder.Visibility = tab is "FIRST" or "Grammar" or "Lexer" or "AST"
                                         ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ── Refresh all artifact views ────────────────────────────────────────
 
-    private void RefreshAll(CompilationResult r, bool includeParse, bool includeIR)
+    private void RefreshAll(CompilationResult r, bool includeParse, bool includeIR,
+                            IReadOnlyList<Quadruple>? code = null)
     {
+        code ??= r.Quadruples.All();
+
         // Stats
         StatErrors.Text    = r.Errors.Count.ToString();
         StatTokens.Text    = r.Tokens.Count.ToString();
-        StatArtifacts.Text = r.Quadruples.NXQ.ToString();
+        StatArtifacts.Text = code.Count.ToString();
 
         // Errors tab
         ErrorsList.ItemsSource = r.Errors;
@@ -128,7 +132,7 @@ public partial class MainWindow : Window
 
         // Quads tab
         QuadsList.Items.Clear();
-        foreach (var l in r.Quadruples.Lines()) QuadsList.Items.Add(l);
+        foreach (var l in QuadrupleTable.Format(code)) QuadsList.Items.Add(l);
 
         // Symbols tab
         SymbolGrid.ItemsSource  = r.Identifiers.All();
@@ -151,6 +155,8 @@ public partial class MainWindow : Window
         sb.AppendLine($"Constants       {r.Constants.All().Count}");
         if (includeParse) sb.AppendLine($"Parse rules     {r.ParseLog.Count}");
         if (includeIR)    sb.AppendLine($"Quadruples      {r.Quadruples.NXQ}");
+        if (includeIR && code.Count != r.Quadruples.NXQ)
+                          sb.AppendLine($"  optimized     {code.Count}");
         sb.AppendLine();
         sb.AppendLine($"Lexical errors  {lexErrors}");
         sb.AppendLine($"Syntax errors   {synErrors}");
@@ -184,7 +190,44 @@ public partial class MainWindow : Window
     {
         if (string.IsNullOrWhiteSpace(Editor.Text)) return;
         var r = Compiler.Translate(Editor.Text);
-        RefreshAll(r, false, true);
+        RefreshAll(r, false, true, CodeFor(r));
         SelectTab(r.Succeeded ? "Quads" : "Errors");
     }
+
+    private void BtnRun_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(Editor.Text)) return;
+        var r = Compiler.Translate(Editor.Text);
+        var code = CodeFor(r);
+
+        if (!r.Succeeded)
+        {
+            OutputText.Text = "✗  Not run: fix the compile errors first.";
+            RefreshAll(r, false, true, code);
+            SelectTab("Errors");
+            return;
+        }
+
+        var x = Interpreter.Run(code);
+
+        // Show run-time values in the Symbols view instead of the translator's estimates
+        foreach (var (name, value) in x.Variables) r.Identifiers.SetVal(name, value.ToString());
+        RefreshAll(r, false, true, code);
+
+        var sb = new StringBuilder();
+        sb.AppendLine($"Ran {code.Count} quadruples in {x.Steps} steps" +
+                      (OptimizeBox.IsChecked == true ? " (optimized)" : ""));
+        sb.AppendLine();
+        int width = x.Variables.Select(p => p.Key.Length).DefaultIfEmpty(0).Max();
+        foreach (var (name, value) in x.Variables) sb.AppendLine($"{name.PadRight(width)}  =  {value}");
+        sb.AppendLine();
+        sb.Append(x.Succeeded ? "✓  Finished" : $"✗  Runtime error: {x.Error}");
+        OutputText.Text = sb.ToString();
+        SelectTab("Output");
+    }
+
+    private IReadOnlyList<Quadruple> CodeFor(CompilationResult r) =>
+        OptimizeBox.IsChecked == true && r.Succeeded
+            ? Optimizer.Optimize(r.Quadruples.All())
+            : r.Quadruples.All();
 }

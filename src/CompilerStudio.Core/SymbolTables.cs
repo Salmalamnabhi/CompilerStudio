@@ -59,6 +59,8 @@ public class QuadrupleTable
     public string GetR(int i) => _t[i].Result;
     public int    Last()      => _t.Count - 1;
     public IReadOnlyList<Quadruple> All() => _t;
-    public List<string> Lines()
-    { var l = new List<string>(); for (int i = 0; i < _t.Count; i++) l.Add($"({i})   {_t[i]}"); return l; }
+    public List<string> Lines() => Format(_t);
+
+    public static List<string> Format(IReadOnlyList<Quadruple> code)
+    { var l = new List<string>(); for (int i = 0; i < code.Count; i++) l.Add($"({i})   {code[i]}"); return l; }
 }

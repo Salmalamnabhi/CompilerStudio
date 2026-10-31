@@ -136,12 +136,18 @@
                      FontSize="11" FontWeight="Bold" FontFamily="Segoe UI"
                      VerticalAlignment="Center"/>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <CheckBox x:Name="OptimizeBox" Content="Optimize"
+                      Foreground="#CDD6F4" FontFamily="Segoe UI" FontSize="11"
+                      VerticalAlignment="Center" Margin="0,0,8,0"
+                      ToolTip="Optimize the quadruples for Translate and Run"/>
             <Button Content="▶ Lex"       Background="#A6E3A1"
                     Style="{StaticResource RunBtn}" Click="BtnLexical_Click"/>
             <Button Content="▶ Parse"     Background="#89B4FA"
                     Style="{StaticResource RunBtn}" Click="BtnSyntax_Click"/>
             <Button Content="▶ Translate" Background="#F38BA8"
                     Style="{StaticResource RunBtn}" Click="BtnTranslate_Click"/>
+            <Button Content="▶ Run"       Background="#FAB387"
+                    Style="{StaticResource RunBtn}" Click="BtnRun_Click"/>
           </StackPanel>
         </Grid>
       </Border>
@@ -221,6 +227,7 @@
           <Button x:Name="Btn_Tokens"  Content="Tokens"  Tag="Tokens"  Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_Symbols" Content="Symbols" Tag="Symbols" Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_AST"     Content="AST"     Tag="AST"     Style="{StaticResource TabBtn}" Click="Tab_Click"/>
+          <Button x:Name="Btn_Output"  Content="Output"  Tag="Output"  Style="{StaticResource TabBtn}" Click="Tab_Click"/>
         </StackPanel>
       </Border>
 
@@ -326,6 +333,15 @@
           <ListBox x:Name="ParseLogList"
                    Style="{StaticResource DarkList}"
                    ItemContainerStyle="{StaticResource DarkListItem}"/>
+        </Border>
+
+        <!-- OUTPUT VIEW (Run) -->
+        <Border x:Name="View_Output" Background="#1E1E2E" Padding="14" Visibility="Collapsed">
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="OutputText" Text="Press ▶ Run to execute the program."
+                       Foreground="#CDD6F4" FontFamily="Consolas" FontSize="12"
+                       TextWrapping="Wrap" LineHeight="20"/>
+          </ScrollViewer>
         </Border>
 
         <!-- PLACEHOLDER for FIRST / Grammar / Lexer / AST -->

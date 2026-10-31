@@ -122,4 +122,49 @@ public class CliAppTests
         Assert.Contains("Constants: 10, 5", output);
         Assert.Contains("Temps:     T1", output);
     }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("--optimize")]
+    public void Run_prints_final_variable_values(string flag)
+    {
+        var args = new[] { "run", Example("while_loop.src"), flag }.Where(a => a != "").ToArray();
+
+        var (code, output, err) = Run(args);
+
+        Assert.Equal(CliApp.Success, code);
+        Assert.Equal("", err);
+        Assert.Equal(new[] { "$i$ = 5", "$sum$ = 20" }, output.TrimEnd().Split(Environment.NewLine));
+    }
+
+    [Fact]
+    public void Compile_with_optimize_prints_fewer_quadruples()
+    {
+        var (_, output, _) = Run("compile", Example("arithmetic.src"), "--optimize");
+
+        Assert.Equal(new[]
+        {
+            "(0)   ( = , 10 , null , $x$ )",
+            "(1)   ( = , 15 , null , $y$ )",
+        }, output.TrimEnd().Split(Environment.NewLine));
+    }
+
+    [Fact]
+    public void Run_does_not_execute_a_program_with_compile_errors()
+    {
+        var (code, output, err) = Run("run", Example("errors.src"));
+
+        Assert.Equal(CliApp.CompileError, code);
+        Assert.Equal("", output);
+        Assert.DoesNotContain("runtime error", err);
+    }
+
+    [Fact]
+    public void Runtime_errors_go_to_stderr()
+    {
+        var (code, _, err) = RunWithInput("int $x$;\n$x$ = 0;\nwhile (1 < 2) do $x$ = $x$ + 1;", "run", "-");
+
+        Assert.Equal(CliApp.CompileError, code);
+        Assert.Contains("-: runtime error: step limit of 100000 reached", err);
+    }
 }
