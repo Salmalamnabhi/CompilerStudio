@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<SyntaxDefinition name="CustomLang"
+    xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+
+  <Color name="Keyword"    foreground="#C792EA" fontWeight="bold"/>
+  <Color name="Identifier" foreground="#A6E3A1"/>
+  <Color name="Number"     foreground="#F38BA8"/>
+  <Color name="Operator"   foreground="#89DCEB"/>
+  <Color name="Separator"  foreground="#6C7086"/>
+  <Color name="Comment"    foreground="#45475A" fontStyle="italic"/>
+
+  <RuleSet>
+    <!-- Line comment -->
+    <Span color="Comment" singleline="true">
+      <Begin>//</Begin>
+    </Span>
+
+    <Keywords color="Keyword">
+      <Word>int</Word>
+      <Word>if</Word>
+      <Word>then</Word>
+      <Word>else</Word>
+      <Word>while</Word>
+      <Word>do</Word>
+      <Word>begin</Word>
+      <Word>end</Word>
+      <Word>print</Word>
+    </Keywords>
+
+    <!-- $identifier$ -->
+    <Rule color="Identifier">\$[a-z][a-z0-9]*\$</Rule>
+
+    <!-- Numbers -->
+    <Rule color="Number">\b[0-9]+(\.[0-9]+)?\b</Rule>
+
+    <!-- Operators -->
+    <Rule color="Operator">:=|==|!=|&lt;=|&gt;=|[+\-*/&lt;&gt;=!]</Rule>
+
+    <!-- Separators -->
+    <Rule color="Separator">[;,()]</Rule>
+  </RuleSet>
+</SyntaxDefinition>
