@@ -1,0 +1,8 @@
+int $i$, $sum$;
+$i$ = 0;
+$sum$ = 0;
+while ($i$ < 5) do
+begin
+  $sum$ = $sum$ + $i$ * 2;
+  $i$ = $i$ + 1;
+end;

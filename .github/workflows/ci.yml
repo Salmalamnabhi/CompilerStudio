@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    # The WPF app only builds on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build
+        run: dotnet build CompilerStudio.sln --configuration Release
+
+      - name: Test
+        run: dotnet test CompilerStudio.sln --configuration Release --no-build --logger "console;verbosity=normal"
+
+      - name: Compile examples with the CLI
+        shell: bash
+        run: |
+          cli=src/CompilerStudio.Cli/bin/Release/net8.0/cstudio.exe
+          for f in examples/*.src; do
+            [ "$f" = examples/errors.src ] && continue
+            echo "== $f"
+            "$cli" compile "$f"
+          done
+          echo "== examples/errors.src (expected to fail)"
+          if "$cli" compile examples/errors.src; then exit 1; fi
