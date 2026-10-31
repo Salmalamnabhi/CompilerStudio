@@ -200,3 +200,7 @@ examples/                     sample programs used by the tests and CI
 - Using an undeclared variable is not reported, because the lexer registers every
   `$name$` it sees. A skipped test documents the expected behaviour.
 - The FIRST, Grammar, Lexer and AST tabs in the desktop app are placeholders.
+
+## License
+
+[MIT](LICENSE) © 2026 Salma Lamnabhi
