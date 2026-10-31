@@ -6,6 +6,9 @@ A complete compiler for a small imperative language, written in C# / .NET 8.
 It goes from source text to optimized three-address code and runs the result,
 with a WPF desktop app that shows every stage and a command-line tool for scripting.
 
+**[Download the latest release](https://github.com/Salmalamnabhi/CompilerStudio/releases/latest)**:
+single-file Windows executables for the desktop app and the CLI, no .NET install needed.
+
 ![Compiler Studio running a while loop](docs/screenshot.png)
 
 ## Features
