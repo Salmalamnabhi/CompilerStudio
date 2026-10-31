@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ae="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
-        Title="Compiler Engineering v2.0"
+        Title="Compiler Studio"
         Width="1300" Height="820"
         MinWidth="900" MinHeight="600"
         Background="#12121E">
@@ -209,26 +209,26 @@
       <!-- Tab row 1 -->
       <Border Grid.Row="2" Background="#1E1E2E" Padding="8,5,8,5"
               BorderBrush="#252540" BorderThickness="0,0,0,1">
-        <StackPanel Orientation="Horizontal">
+        <WrapPanel Orientation="Horizontal">
           <Button x:Name="Btn_ParseTree" Content="Parse Tree" Tag="ParseTree" Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_Quads"     Content="Quads"      Tag="Quads"     Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_FIRST"     Content="FIRST"      Tag="FIRST"     Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_Grammar"   Content="Grammar"    Tag="Grammar"   Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_Lexer"     Content="Lexer"      Tag="Lexer"     Style="{StaticResource TabBtn}" Click="Tab_Click"/>
-        </StackPanel>
+        </WrapPanel>
       </Border>
 
       <!-- Tab row 2 -->
       <Border Grid.Row="3" Background="#1E1E2E" Padding="8,5,8,5"
               BorderBrush="#252540" BorderThickness="0,0,0,1" Margin="0,0,0,2">
-        <StackPanel Orientation="Horizontal">
+        <WrapPanel Orientation="Horizontal">
           <Button x:Name="Btn_Summary" Content="Summary" Tag="Summary" Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_Errors"  Content="Errors"  Tag="Errors"  Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_Tokens"  Content="Tokens"  Tag="Tokens"  Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_Symbols" Content="Symbols" Tag="Symbols" Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_AST"     Content="AST"     Tag="AST"     Style="{StaticResource TabBtn}" Click="Tab_Click"/>
           <Button x:Name="Btn_Output"  Content="Output"  Tag="Output"  Style="{StaticResource TabBtn}" Click="Tab_Click"/>
-        </StackPanel>
+        </WrapPanel>
       </Border>
 
       <!-- ─── Content views ─── -->
