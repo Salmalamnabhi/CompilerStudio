@@ -37,7 +37,7 @@ public class ParserTests
         Assert.Equal("Syntax", err.Phase);
         Assert.Equal(2, err.Line);
         Assert.Equal(1, err.Col);
-        Assert.Contains($"expected [{TokenTypes.Semicolon}]", err.Message);
+        Assert.Equal("expected [Semicolon], found [Identifier] \"$x$\"", err.Message);
     }
 
     [Fact]
@@ -45,6 +45,6 @@ public class ParserTests
     {
         var r = Compiler.Parse("int $a$;\n$a$ = 1;\nif ($a$ < 2) $a$ = 3; else $a$ = 4;");
 
-        Assert.Contains(r.Errors, e => e.Phase == "Syntax" && e.Message.Contains($"[{TokenTypes.Then}]"));
+        Assert.Contains(r.Errors, e => e.Phase == "Syntax" && e.Message.StartsWith("expected [Then]"));
     }
 }

@@ -1,4 +1,4 @@
-using static CompilerStudio.Core.TokenTypes;
+using static CompilerStudio.Core.TokenType;
 
 namespace CompilerStudio.Core;
 

@@ -7,7 +7,7 @@ public static class Compiler
     public static CompilationResult Lex(string source) => Run(source, (lexer, _) =>
     {
         // Drain the entire token stream
-        while (lexer.NextToken().Type != TokenTypes.EndOfInput) { }
+        while (lexer.NextToken().Type != TokenType.EndOfInput) { }
     });
 
     public static CompilationResult Parse(string source) => Run(source, (lexer, r) =>

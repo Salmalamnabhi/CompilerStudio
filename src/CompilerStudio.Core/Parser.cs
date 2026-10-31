@@ -1,4 +1,4 @@
-using static CompilerStudio.Core.TokenTypes;
+using static CompilerStudio.Core.TokenType;
 
 namespace CompilerStudio.Core;
 
@@ -16,7 +16,7 @@ public abstract class RecursiveDescentBase
         _tok   = lexer.NextToken();
     }
 
-    protected bool Match(string type)
+    protected bool Match(TokenType type)
     {
         if (_tok.Type == type)
         {

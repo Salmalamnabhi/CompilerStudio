@@ -20,7 +20,7 @@ public class TokenItem
 
     public static TokenItem From(Token t) => new()
     {
-        Cat = $"({TokenTypes.Category(t.Type)},",
+        Cat = $"({TokenInfo.Category(t.Type)},",
         Val = $" \"{t.Value}\")",
         Loc = $"  line {t.Line}:{t.Col}"
     };

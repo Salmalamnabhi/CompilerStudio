@@ -1,5 +1,5 @@
 using System.Text;
-using static CompilerStudio.Core.TokenTypes;
+using static CompilerStudio.Core.TokenType;
 
 namespace CompilerStudio.Core;
 
@@ -13,7 +13,7 @@ public class Lexer
 
     public Lexer(string source, CompilationResult result)
     {
-        _src = source + EndOfInput;
+        _src = source + "#";
         _r   = result;
     }
 
@@ -66,8 +66,8 @@ public class Lexer
             var sb = new StringBuilder().Append(c);
             while (char.IsLetterOrDigit(Peek()) || Peek() == '_') sb.Append(Advance());
             string word = sb.ToString();
-            string? type = Keyword(word);
-            if (type != null) result = new Token(type, word, tL, tC);
+            TokenType? type = TokenInfo.Keyword(word);
+            if (type != null) result = new Token(type.Value, word, tL, tC);
             else
             {
                 _r.AddError("Lexical", tL, tC, $"bare identifier '{word}' — use $name$ syntax");

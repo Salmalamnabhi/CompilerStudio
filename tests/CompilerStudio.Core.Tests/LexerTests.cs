@@ -1,11 +1,11 @@
 using CompilerStudio.Core;
-using static CompilerStudio.Core.TokenTypes;
+using static CompilerStudio.Core.TokenType;
 
 namespace CompilerStudio.Core.Tests;
 
 public class LexerTests
 {
-    private static string[] Types(CompilationResult r) => r.Tokens.Select(t => t.Type).ToArray();
+    private static TokenType[] Types(CompilationResult r) => r.Tokens.Select(t => t.Type).ToArray();
 
     [Fact]
     public void Recognises_keywords_identifiers_numbers_and_delimiters()
@@ -28,7 +28,7 @@ public class LexerTests
     [InlineData(">=", RelOp)]
     [InlineData("+",  Plus)]
     [InlineData("*",  Times)]
-    public void Recognises_operators(string op, string expectedType)
+    public void Recognises_operators(string op, TokenType expectedType)
     {
         var r = Compiler.Lex(op);
 
